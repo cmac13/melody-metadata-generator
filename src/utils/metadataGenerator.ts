@@ -74,13 +74,30 @@ const generateTrackTitle = (albumTitle: string, index: number) => {
   return patterns[Math.floor(Math.random() * patterns.length)];
 };
 
+// Keep track of used ISRCs
+const usedISRCs = new Set<string>();
+
+const generateUniqueISRC = () => {
+  const prefix = "USOPM"; // Standard prefix
+  let isrc: string;
+  
+  do {
+    // Generate a 7-digit number between 1000000 and 9999999
+    const number = Math.floor(Math.random() * 9000000) + 1000000;
+    isrc = `${prefix}${number}`;
+  } while (usedISRCs.has(isrc));
+  
+  usedISRCs.add(isrc);
+  return isrc;
+};
+
 const generateTracks = (albumTitle: string, isSingle: boolean) => {
   const trackCount = isSingle ? 1 : Math.floor(Math.random() * 15) + 5; // 5-20 tracks for albums
   return Array.from({ length: trackCount }, (_, index) => ({
     track: {
       title: generateTrackTitle(albumTitle, index),
       track_type: "audio",
-      isrc: `USOPM${Math.floor(Math.random() * 9000000) + 1000000}`,
+      isrc: generateUniqueISRC(),
       audio_language: "English",
       metadata_language: "English",
       primary_recording_location: "US",
