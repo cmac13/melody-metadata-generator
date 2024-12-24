@@ -131,6 +131,8 @@ export const generateRandomMetadata = (baseMetadata: any) => {
   newMetadata.release_date = newReleaseDate;
   newMetadata.display_title = `${newArtist} - ${newTitle}`;
   newMetadata.configuration = isSingle ? "Digital Single" : "Digital Album";
+  newMetadata.label = "OpenPlay Music"; // Setting a fixed label value
+  newMetadata.display_label = "OpenPlay Music"; // Also setting display_label for consistency
 
   if (newMetadata.cover_art) {
     newMetadata.cover_art.title = `${newTitle} Cover Art`;
