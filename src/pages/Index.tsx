@@ -32,7 +32,7 @@ const Index = () => {
   return (
     <div className="min-h-screen p-8 max-w-6xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Music Release Metadata Generator</h1>
+        <h1 className="text-3xl font-bold mb-2">OpenPlay Music Metadata Generator</h1>
         <p className="text-gray-600">Generate random metadata for testing purposes</p>
       </div>
       
