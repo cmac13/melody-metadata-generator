@@ -45,6 +45,32 @@ const trackWords = [
   "Wind", "Storm", "Rain", "Snow", "Ice", "Fire", "Earth", "Metal", "Wood", "Water"
 ];
 
+const generateUPC = () => {
+  // Generate 11 random digits
+  const digits: number[] = [];
+  for (let i = 0; i < 11; i++) {
+    digits.push(Math.floor(Math.random() * 10));
+  }
+
+  // Calculate check digit
+  let oddSum = 0;
+  let evenSum = 0;
+  
+  for (let i = 0; i < digits.length; i++) {
+    if (i % 2 === 0) {
+      oddSum += digits[i];
+    } else {
+      evenSum += digits[i];
+    }
+  }
+  
+  const total = (oddSum * 3) + evenSum;
+  const checkDigit = (10 - (total % 10)) % 10;
+  
+  // Combine all digits including check digit
+  return digits.join('') + checkDigit;
+};
+
 const generateTitle = () => {
   const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
   const noun = nouns[Math.floor(Math.random() * nouns.length)];
@@ -122,6 +148,7 @@ export const generateRandomMetadata = (baseMetadata: any) => {
   const newMusicType = musicTypes[Math.floor(Math.random() * musicTypes.length)];
   const newReleaseDate = generateFutureDate();
   const isSingle = Math.random() < 0.3; // 30% chance of being a single
+  const newUPC = generateUPC();
 
   const newMetadata = { ...baseMetadata };
 
@@ -131,8 +158,9 @@ export const generateRandomMetadata = (baseMetadata: any) => {
   newMetadata.release_date = newReleaseDate;
   newMetadata.display_title = `${newArtist} - ${newTitle}`;
   newMetadata.configuration = isSingle ? "Digital Single" : "Digital Album";
-  newMetadata.label = "OpenPlay Music"; // Setting a fixed label value
-  newMetadata.display_label = "OpenPlay Music"; // Also setting display_label for consistency
+  newMetadata.label = "OpenPlay Music";
+  newMetadata.display_label = "OpenPlay Music";
+  newMetadata.upc = newUPC;
 
   if (newMetadata.cover_art) {
     newMetadata.cover_art.title = `${newTitle} Cover Art`;
@@ -140,6 +168,7 @@ export const generateRandomMetadata = (baseMetadata: any) => {
 
   if (newMetadata.discs) {
     newMetadata.discs[0].disc_tracks = generateTracks(newTitle, isSingle);
+    newMetadata.discs[0].upc = newUPC;
   }
 
   return newMetadata;
