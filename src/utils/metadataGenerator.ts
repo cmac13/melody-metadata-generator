@@ -21,6 +21,51 @@ const generateTitle = () => {
   return `${adjectives[Math.floor(Math.random() * adjectives.length)]} ${nouns[Math.floor(Math.random() * nouns.length)]}`;
 };
 
+const generateTrackTitle = (albumTitle: string, index: number) => {
+  const trackTitles = [
+    "Introduction",
+    "The Beginning",
+    "Midnight Hour",
+    "Dancing in the Rain",
+    "Sunset Boulevard",
+    "Morning Light",
+    "Evening Star",
+    "Dreamscape",
+    "Urban Legend",
+    "Final Chapter",
+    "The Journey",
+    "Memories",
+    "Echoes",
+    "Reflections",
+    "Tomorrow's Promise"
+  ];
+
+  if (index === 0) {
+    return albumTitle;
+  }
+  return trackTitles[Math.floor(Math.random() * trackTitles.length)];
+};
+
+const generateTracks = (albumTitle: string, isSingle: boolean) => {
+  const trackCount = isSingle ? 1 : Math.floor(Math.random() * 7) + 5; // 5-12 tracks for albums
+  return Array.from({ length: trackCount }, (_, index) => ({
+    track: {
+      title: generateTrackTitle(albumTitle, index),
+      track_type: "audio",
+      isrc: `USOPM${Math.floor(Math.random() * 9000000) + 1000000}`,
+      audio_language: "English",
+      metadata_language: "English",
+      primary_recording_location: "US",
+      metadata_language_country: "United States",
+      parental_advisory: "Non-Applicable",
+      duration: "PT3M30S", // Example duration
+      preview_in: "PT30S", // Example preview duration
+      sample_length: "PT30S", // Example sample length
+      // Add any other necessary track properties here
+    }
+  }));
+};
+
 const generateFutureDate = () => {
   const today = new Date();
   const daysToAdd = Math.floor(Math.random() * 365) + 30; // Between 30 and 395 days in the future
@@ -33,6 +78,7 @@ export const generateRandomMetadata = (baseMetadata: any) => {
   const newTitle = generateTitle();
   const newMusicType = musicTypes[Math.floor(Math.random() * musicTypes.length)];
   const newReleaseDate = generateFutureDate();
+  const isSingle = Math.random() < 0.3; // 30% chance of being a single
 
   const newMetadata = { ...baseMetadata };
 
@@ -42,6 +88,7 @@ export const generateRandomMetadata = (baseMetadata: any) => {
   newMetadata.music_type = newMusicType;
   newMetadata.release_date = newReleaseDate;
   newMetadata.display_title = `${newArtist} - ${newTitle}`;
+  newMetadata.configuration = isSingle ? "Digital Single" : "Digital Album";
 
   // Update cover art title
   if (newMetadata.cover_art) {
@@ -50,25 +97,7 @@ export const generateRandomMetadata = (baseMetadata: any) => {
 
   // Update tracks
   if (newMetadata.discs) {
-    newMetadata.discs.forEach((disc: any) => {
-      if (disc.disc_tracks) {
-        disc.disc_tracks.forEach((trackData: any) => {
-          if (trackData.track) {
-            trackData.track.title = `${newTitle} - Track ${Math.floor(Math.random() * 10) + 1}`;
-            trackData.track.artist_display_name = newArtist;
-            trackData.track.music_type = newMusicType;
-            
-            // Update works within tracks
-            if (trackData.track.works) {
-              trackData.track.works.forEach((work: any) => {
-                work.title = trackData.track.title;
-                work.music_type = newMusicType;
-              });
-            }
-          }
-        });
-      }
-    });
+    newMetadata.discs[0].disc_tracks = generateTracks(newTitle, isSingle);
   }
 
   return newMetadata;
