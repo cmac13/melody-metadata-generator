@@ -30,9 +30,12 @@ const FriendlyView: React.FC<FriendlyViewProps> = ({ metadata }) => {
               <ScrollArea className="h-[400px] rounded-md border p-4">
                 <div className="space-y-2">
                   {metadata.discs?.[0]?.disc_tracks.map((track: any, index: number) => (
-                    <div key={index} className="flex items-center space-x-2 text-sm">
-                      <span className="text-muted-foreground">{index + 1}.</span>
-                      <span>{track.track.title}</span>
+                    <div key={index} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-muted-foreground">{index + 1}.</span>
+                        <span>{track.track.title}</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">{track.track.isrc}</span>
                     </div>
                   ))}
                 </div>
