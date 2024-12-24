@@ -5,6 +5,8 @@ import { generateRandomMetadata } from '@/utils/metadataGenerator';
 import { RefreshCw, Copy } from 'lucide-react';
 import JsonDisplay from '@/components/JsonDisplay';
 import { baseMetadata } from '@/utils/baseMetadata';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FriendlyView from '@/components/FriendlyView';
 
 const Index = () => {
   const [metadata, setMetadata] = useState(baseMetadata);
@@ -45,7 +47,18 @@ const Index = () => {
         </Button>
       </div>
 
-      <JsonDisplay data={metadata} />
+      <Tabs defaultValue="friendly" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="friendly">Friendly View</TabsTrigger>
+          <TabsTrigger value="json">JSON View</TabsTrigger>
+        </TabsList>
+        <TabsContent value="friendly">
+          <FriendlyView metadata={metadata} />
+        </TabsContent>
+        <TabsContent value="json">
+          <JsonDisplay data={metadata} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
