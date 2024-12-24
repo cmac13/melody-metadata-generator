@@ -47,7 +47,7 @@ const generateTrackTitle = (albumTitle: string, index: number) => {
 };
 
 const generateTracks = (albumTitle: string, isSingle: boolean) => {
-  const trackCount = isSingle ? 1 : Math.floor(Math.random() * 7) + 5; // 5-12 tracks for albums
+  const trackCount = isSingle ? 1 : Math.floor(Math.random() * 15) + 5; // 5-20 tracks for albums
   return Array.from({ length: trackCount }, (_, index) => ({
     track: {
       title: generateTrackTitle(albumTitle, index),
@@ -58,10 +58,9 @@ const generateTracks = (albumTitle: string, isSingle: boolean) => {
       primary_recording_location: "US",
       metadata_language_country: "United States",
       parental_advisory: "Non-Applicable",
-      duration: "PT3M30S", // Example duration
-      preview_in: "PT30S", // Example preview duration
-      sample_length: "PT30S", // Example sample length
-      // Add any other necessary track properties here
+      duration: "PT3M30S",
+      preview_in: "PT30S",
+      sample_length: "PT30S"
     }
   }));
 };
@@ -73,7 +72,6 @@ const generateFutureDate = () => {
 };
 
 export const generateRandomMetadata = (baseMetadata: any) => {
-  // Generate consistent values for this release
   const newArtist = artistNames[Math.floor(Math.random() * artistNames.length)];
   const newTitle = generateTitle();
   const newMusicType = musicTypes[Math.floor(Math.random() * musicTypes.length)];
@@ -82,7 +80,6 @@ export const generateRandomMetadata = (baseMetadata: any) => {
 
   const newMetadata = { ...baseMetadata };
 
-  // Update top-level fields
   newMetadata.title = newTitle;
   newMetadata.artist_display_name = newArtist;
   newMetadata.music_type = newMusicType;
@@ -90,12 +87,10 @@ export const generateRandomMetadata = (baseMetadata: any) => {
   newMetadata.display_title = `${newArtist} - ${newTitle}`;
   newMetadata.configuration = isSingle ? "Digital Single" : "Digital Album";
 
-  // Update cover art title
   if (newMetadata.cover_art) {
     newMetadata.cover_art.title = `${newTitle} Cover Art`;
   }
 
-  // Update tracks
   if (newMetadata.discs) {
     newMetadata.discs[0].disc_tracks = generateTracks(newTitle, isSingle);
   }
