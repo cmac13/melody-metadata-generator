@@ -23,6 +23,7 @@ const FriendlyView: React.FC<FriendlyViewProps> = ({ metadata }) => {
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Release Date: {new Date(metadata.release_date).toLocaleDateString()}</p>
               <p className="text-sm text-muted-foreground">Label: {metadata.label}</p>
+              <p className="text-sm text-muted-foreground">UPC: {metadata.upc}</p>
             </div>
 
             <div>
