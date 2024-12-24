@@ -11,10 +11,7 @@ const artistNames = [
   "Mountain Echo", "Urban Symphony", "Jazz Fusion", "Neon Dreams", "Crystal Waters"
 ];
 
-const musicTypes = [
-  "pop", "rock", "jazz", "electronic", "classical", "r&b", "hip-hop", "indie", "folk", "ambient",
-  "blues", "country", "metal", "punk", "reggae", "soul", "funk", "dance", "world", "experimental"
-];
+const musicTypes = ["pop", "classical"];
 
 const adjectives = [
   "Lost", "Eternal", "Midnight", "Golden", "Electric", "Wild", "Sacred", "Neon", "Crystal", "Velvet",
