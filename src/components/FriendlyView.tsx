@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import TrackList from './friendly-view/TrackList';
+import ReleaseInfo from './friendly-view/ReleaseInfo';
+import type { Metadata } from '@/types/metadata';
 
 interface FriendlyViewProps {
-  metadata: any;
+  metadata: Metadata;
 }
 
 const FriendlyView: React.FC<FriendlyViewProps> = ({ metadata }) => {
@@ -17,31 +19,18 @@ const FriendlyView: React.FC<FriendlyViewProps> = ({ metadata }) => {
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-semibold">{metadata.artist_display_name}</h3>
-              <p className="text-muted-foreground">{metadata.music_type.charAt(0).toUpperCase() + metadata.music_type.slice(1)}</p>
+              <p className="text-muted-foreground">
+                {metadata.music_type.charAt(0).toUpperCase() + metadata.music_type.slice(1)}
+              </p>
             </div>
             
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Release Date: {new Date(metadata.release_date).toLocaleDateString()}</p>
-              <p className="text-sm text-muted-foreground">Label: {metadata.label}</p>
-              <p className="text-sm text-muted-foreground">UPC: {metadata.upc}</p>
-            </div>
+            <ReleaseInfo 
+              releaseDate={metadata.release_date}
+              label={metadata.label}
+              upc={metadata.upc}
+            />
 
-            <div>
-              <h4 className="font-medium mb-2">Tracks:</h4>
-              <ScrollArea className="h-[400px] rounded-md border p-4">
-                <div className="space-y-2">
-                  {metadata.discs?.[0]?.disc_tracks.map((track: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-muted-foreground">{index + 1}.</span>
-                        <span>{track.track.title}</span>
-                      </div>
-                      <span className="text-xs text-muted-foreground">{track.track.isrc}</span>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-            </div>
+            <TrackList tracks={metadata.discs[0]?.disc_tracks || []} />
           </div>
         </CardContent>
       </Card>
