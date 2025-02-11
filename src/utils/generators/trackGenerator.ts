@@ -22,7 +22,7 @@ const generateUniqueISRC = () => {
   return isrc;
 };
 
-const generateTrackTitle = (albumTitle: string, index: number) => {
+export const generateTrackTitle = (albumTitle: string, index: number) => {
   if (index === 0) {
     return albumTitle;
   }
@@ -45,21 +45,26 @@ const generateTrackTitle = (albumTitle: string, index: number) => {
   return patterns[Math.floor(Math.random() * patterns.length)];
 };
 
+const generateRandomDuration = () => {
+  // Generate a random duration between 2:00 and 5:59
+  const minutes = Math.floor(Math.random() * 4) + 2; // 2-5 minutes
+  const seconds = Math.floor(Math.random() * 60); // 0-59 seconds
+  return `PT${minutes}M${seconds}S`;
+};
+
 export const generateTracks = (albumTitle: string, isSingle: boolean) => {
   const trackCount = isSingle ? 1 : Math.floor(Math.random() * 15) + 5;
-  return Array.from({ length: trackCount }, (_, index) => ({
-    track: {
-      title: generateTrackTitle(albumTitle, index),
-      track_type: "audio",
-      isrc: generateUniqueISRC(),
-      audio_language: "English",
-      metadata_language: "English",
-      primary_recording_location: "US",
-      metadata_language_country: "United States",
-      parental_advisory: "Non-Applicable",
-      duration: "PT3M30S",
-      preview_in: "PT30S",
-      sample_length: "PT30S"
-    }
-  }));
+  const tracks = Array.from({ length: trackCount }, (_, index) => {
+    const trackTitle = generateTrackTitle(albumTitle, index);
+    const duration = generateRandomDuration();
+    return {
+      track: {
+        title: trackTitle,
+        isrc: generateUniqueISRC(),
+        duration,
+        audio_language: "English",
+      }
+    };
+  });
+  return tracks;
 };
